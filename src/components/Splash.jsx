@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import logo from '../assets/firebase.svg';
 import { RiDeleteBin4Line, RiStickyNoteAddLine } from 'react-icons/ri';
 import { FiEdit } from 'react-icons/fi';
 import { LuFileSearch } from 'react-icons/lu';
+import Add from './Add';
 
 const Splash = () => {
+  const [addCard , setShowAddCard] = useState(false)
   return (
     <div className="flex flex-col justify-center space-y-8 items-center sm:text-4xl text-3xl p-2 text-center font-medium">
       <div className="relative sm:max-w-[250px] max-w-[210px] rounded-full p-12 mb-8">
@@ -33,7 +35,8 @@ const Splash = () => {
       
       <div className="flex space-x-4">
         {/* Add Button */}
-        <button className="p-4 text-white rounded-full shadow-2xl shadow-[#4CCD99] hover:bg-[#4CCD99] transition-all">
+        <button className="p-4 text-white rounded-full shadow-2xl shadow-[#4CCD99] hover:bg-[#4CCD99] transition-all"
+        onClick={()=>setShowAddCard(true)}>
           <RiStickyNoteAddLine size={28} />
         </button>
         
@@ -52,6 +55,7 @@ const Splash = () => {
           <LuFileSearch size={28} />
         </button>
       </div>
+      {addCard&& <Add setShowAddCard={()=>setShowAddCard(false)}/>}
     </div>
   );
 };
