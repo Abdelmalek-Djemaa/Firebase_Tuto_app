@@ -7,8 +7,8 @@ import { LuFileSearch } from 'react-icons/lu';
 
 const Splash = () => {
   return (
-    <div className="flex flex-col justify-center space-y-8 items-center sm:text-4xl text-xl p-2 text-center font-medium">
-      <div className="relative sm:max-w-[250px] max-w-[210px] rounded-full p-12">
+    <div className="flex flex-col justify-center space-y-8 items-center sm:text-4xl text-3xl p-2 text-center font-medium">
+      <div className="relative sm:max-w-[250px] max-w-[210px] rounded-full p-12 mb-8">
         <div className="absolute inset-0 bg-[#4CCD99] blur-lg rounded-full"></div>
         <img
         src={logo}
@@ -16,7 +16,7 @@ const Splash = () => {
         className="relative z-10"
         />
       </div>
-      <div className="sm:max-w-2xl py-4">
+      <div className="sm:max-w-2xl h-16">
         <TypeAnimation
           sequence={[
             'Firebase Tuto', // Text to type out
