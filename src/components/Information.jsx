@@ -18,7 +18,7 @@ const Information = ({setStart}) => {
             It also includes query functions for filtering and sorting data, showcasing Firebase's querying capabilities.
         </div>
         <div className="w-full py-2">
-            <div className="px-5 pt-4 shadow-lg text-gray-100 sm:text-sm  text-xs font-mono bg-gray-800  pb-6 rounded-lg">
+            <div className="px-5 pt-4 shadow-lg text-gray-100 sm:text-sm  text-xs font-mono bg-gray-800  pb-6 rounded-lg h-36">
                 <div className="top mb-2 flex">
                     <div className="h-3 w-3 bg-red-500 rounded-full"></div>
                     <div className="ml-2 h-3 w-3 bg-orange-300 rounded-full"></div>
