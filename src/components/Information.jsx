@@ -29,7 +29,7 @@ const Information = ({setStart}) => {
                     <p className="flex-1 typing items-center pl-2">
                         <TypeAnimation
                             sequence={[
-                                "addDoc(collection(db, 'tasks'),{attributs});",
+                                "addDoc(collection(db, collection_name),{attributs});",
                                 1000,
                                 ' ',
                                 1000,
