@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { BsToggleOn, BsToggleOff, BsSearch, BsCardText } from "react-icons/bs"; 
+import { BsToggleOn, BsToggleOff } from "react-icons/bs"; 
 import { motion } from "framer-motion";
-
+import { GoTasklist } from "react-icons/go";
 import { IoAddCircleOutline} from "react-icons/io5";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdOutlineDeleteOutline } from "react-icons/md";
@@ -13,7 +13,6 @@ import {
   deleteDoc,
   doc,
   query,
-  where,
   orderBy,
 } from "firebase/firestore";
 import { db } from "../firebase";
@@ -26,7 +25,6 @@ const MainApp = ({ setShowMainApp }) => {
   const [editedTaskText, setEditedTaskText] = useState("");
   const [queryExecuted, setQueryExecuted] = useState(""); // Full query
   const [typedQuery, setTypedQuery] = useState(""); // The typed query
-  const [searchQuery, setSearchQuery] = useState(""); // Store search query
   const [cursorVisible, setCursorVisible] = useState(false);
 
   useEffect(() => {
@@ -114,32 +112,6 @@ const MainApp = ({ setShowMainApp }) => {
     }
   };
 
-  const fetchFilteredTasks = async (searchQuery) => {
-    // Create the query to fetch filtered tasks
-    const q = query(
-      collection(db, "tasks"),
-      where("text", ">=", searchQuery),  // Match tasks starting with the search query
-      where("text", "<=", searchQuery + "\uf8ff"), // Firebase trick for case-insensitive search
-      orderBy("text") // Order results by text
-    );
-    
-    const querySnapshot = await getDocs(q); // Execute the query
-    const taskList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  
-    setTasks(taskList); // Set the filtered tasks in the state
-  };
-
-  const handleSearch = () => {
-    const firebaseQuery = `  query(collection(db, "tasks"), where("text", ">=", "${searchQuery}"), where("text", "<=", "${searchQuery}\\uf8ff"), orderBy("text"))`;
-    setQueryExecuted(firebaseQuery); // Display the Firebase query
-    fetchFilteredTasks(searchQuery); // Fetch filtered tasks from Firebase
-  };
-  
-    
-
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 flex flex-col justify-center items-center w-full h-full z-[999] p-4 font-medium bg-[#171717] bg-opacity-60">
       <motion.div
@@ -152,9 +124,11 @@ const MainApp = ({ setShowMainApp }) => {
             className="absolute right-3 top-7 transform -translate-y-1/2 hover:scale-105 rounded-full p-1.5 bg-[#4CCD99] duration-300"
           >
             <AiOutlineFullscreenExit size={20} />
-        </button>
-        <span className="text-2xl border-b-2 rounded-full px-8 py-3">To do app example</span>
-        <div className="relative w-full pb-1 pt-3 px-1">
+          </button>
+        <div className="p-4 text-white rounded-full shadow-2xl shadow-[#4CCD99]">
+          <GoTasklist size={45} />
+        </div>
+        <div className="relative w-full my-2 px-1">
           <input
             type="text"
             placeholder="Enter a new task"
@@ -164,31 +138,16 @@ const MainApp = ({ setShowMainApp }) => {
           />
           <button
             onClick={addTask}
-            className="absolute right-3 sm:top-10 top-9 transform -translate-y-1/2 p-1 rounded-full text-white hover:bg-[#3BB281] transition-all duration-300"
+            className="absolute right-3 sm:top-7 top-6 transform -translate-y-1/2 p-1 rounded-full text-white hover:bg-[#3BB281] transition-all duration-300"
           >
             <IoAddCircleOutline size={26} />
           </button>
         </div>
-        <div className="relative w-full px-1 pb-4">
-          <input
-            type="text"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2.5 pr-12 sm:text-sm text-xs rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#4CCD99]"
-          />
-          <button
-            onClick={handleSearch}
-            className="absolute right-3 sm:top-7 top-6 transform -translate-y-1/2 p-2 rounded-full text-white hover:bg-[#3BB281] transition-all duration-300"
-          >
-            <BsSearch size={18} />
-          </button>
-        </div>
-        <ul className="w-full space-y-5 h-44 overflow-auto border-b-2 rounded-2xl py-3 px-1">
+        <ul className="w-full space-y-2 h-40 overflow-auto border-b-2 rounded-lg py-4 px-1">
           {tasks.map((task) => (
             <li
               key={task.id}
-              className="flex justify-between items-center sm:px-4 px-2 rounded-lg bg-gray-800 text-white shadow-md hover:scale-[99%] duration-200"
+              className="flex justify-between items-center px-4 rounded-lg bg-gray-800 text-white shadow-md hover:scale-[99%] duration-200"
             >
               {editingTaskId === task.id ? (
                 <input
@@ -200,14 +159,13 @@ const MainApp = ({ setShowMainApp }) => {
                 />
               ) : (
                 <span
-                  className="flex justify-start items-center sm:text-sm text-xs font-normal cursor-pointer w-full text-start relative"
+                  className="sm:text-sm text-xs font-normal cursor-pointer w-full text-start"
                   onClick={() => {
                     setEditingTaskId(task.id);
                     setEditedTaskText(task.text);
                   }}
                 >
-                  <span className="absolute -top-5 left-1/2 bg-gray-800 rounded-t-full px-4 text-[10px]">{new Date(task.createdAt.seconds * 1000).toLocaleDateString()}</span>
-                  <BsCardText size={24} className="pr-2" />{task.text}
+                  {task.text}
                 </span>
               )}
               <div className="flex space-x-2">
@@ -221,7 +179,7 @@ const MainApp = ({ setShowMainApp }) => {
                 ) : (
                   <button
                     onClick={() => toggleTaskCompletion(task.id, task.completed)}
-                    className="py-1 rounded-lg text-white transition-all duration-300"
+                    className="p-1 rounded-lg text-white transition-all duration-300"
                   >
                     {task.completed ? (
                       <BsToggleOn
@@ -238,7 +196,7 @@ const MainApp = ({ setShowMainApp }) => {
                 )}
                 <button
                   onClick={() => deleteTask(task.id)}
-                  className="py-1 rounded-lg text-white font-medium"
+                  className="p-1 rounded-lg text-white font-medium"
                 >
                   <MdOutlineDeleteOutline
                     size={30}
