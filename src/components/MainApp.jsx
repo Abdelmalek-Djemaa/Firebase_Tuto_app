@@ -145,7 +145,7 @@ const MainApp = ({ setShowMainApp }) => {
       <motion.div
         className="flex relative flex-col justify-center items-center max-w-xl w-full bg-[#171717] bg-opacity-95 shadow-xl shadow-[#4CCD99] rounded-3xl py-6 px-4"
         initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0, transition: { duration: 0.7 } }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 0.4 } }}
       >
         <button
             onClick={setShowMainApp}
