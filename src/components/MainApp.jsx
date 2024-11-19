@@ -149,9 +149,9 @@ const MainApp = ({ setShowMainApp }) => {
       >
         <button
             onClick={setShowMainApp}
-            className="absolute right-3 top-7 transform -translate-y-1/2 hover:scale-105 rounded-full p-1.5 bg-[#4CCD99] duration-300"
+            className="absolute right-3 top-7 transform -translate-y-1/2 hover:scale-105 rounded-full p-1 bg-[#4CCD99] duration-300"
           >
-            <AiOutlineFullscreenExit size={20} />
+            <AiOutlineFullscreenExit size={18} />
         </button>
         <span className="text-2xl border-b-2 rounded-full px-8 py-3">To do app example</span>
         <div className="relative w-full pb-1 pt-3 px-1">
