@@ -3,6 +3,7 @@ import { BsToggleOn, BsToggleOff, BsSearch, BsCardText } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {ReactTyped} from "react-typed";
 
 import { IoAddCircleOutline} from "react-icons/io5";
 import { FaRegCircleCheck } from "react-icons/fa6";
@@ -27,43 +28,13 @@ const MainApp = ({ setShowMainApp }) => {
   const [newTask, setNewTask] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editedTaskText, setEditedTaskText] = useState("");
-  const [queryExecuted, setQueryExecuted] = useState(""); // Full query
-  const [typedQuery, setTypedQuery] = useState(""); // The typed query
-  const [searchQuery, setSearchQuery] = useState(""); // Store search query
-  const [cursorVisible, setCursorVisible] = useState(false);
+  const [queryExecuted, setQueryExecuted] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
-  // Simulate typing effect for query
-  // Simulate typing effect for query
-  useEffect(() => {
-    if (queryExecuted) {
-      // Reset typedQuery whenever queryExecuted changes
-      setTypedQuery("");
-
-      let index = 0;
-      const interval = setInterval(() => {
-        if (index < queryExecuted.length-1) {
-          setTypedQuery((prev) => prev + queryExecuted[index]);
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 100); // Adjust typing speed (100ms per character)
-
-      // Manage cursor blinking
-      const cursorInterval = setInterval(() => {
-        setCursorVisible((prev) => !prev); // Toggle cursor visibility
-      }, 500); // Cursor blinks every 500ms
-
-      return () => {
-        clearInterval(interval);
-        clearInterval(cursorInterval);
-      };
-    }
-  }, [queryExecuted]);
 
   const fetchTasks = useCallback(async () => {
     const q = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
@@ -78,7 +49,7 @@ const MainApp = ({ setShowMainApp }) => {
   const addTask = async () => {
     if (newTask.trim()) {
       try {
-        const queryText = `  addDoc(collection(db, "tasks"), { text: "${newTask}", completed: false, createdAt: new Date() });`;
+        const queryText = `addDoc(collection(db, "tasks"), { text: "${newTask}", completed: false, createdAt: new Date() });`;
         setQueryExecuted(queryText);
         await addDoc(collection(db, "tasks"), {
           text: newTask,
@@ -99,7 +70,7 @@ const MainApp = ({ setShowMainApp }) => {
 
   const toggleTaskCompletion = async (taskId, currentStatus) => {
     try {
-      const queryText = `  updateDoc(doc(db, "tasks", "${taskId}"), { completed: ${!currentStatus} });`;
+      const queryText = `updateDoc(doc(db, "tasks", "${taskId}"), { completed: ${!currentStatus} });`;
       setQueryExecuted(queryText);
       const taskRef = doc(db, "tasks", taskId);
       await updateDoc(taskRef, { completed: !currentStatus });
@@ -113,7 +84,7 @@ const MainApp = ({ setShowMainApp }) => {
 
   const deleteTask = async (taskId) => {
     try {
-      const queryText = `  deleteDoc(doc(db, "tasks", "${taskId}"));`;
+      const queryText = `deleteDoc(doc(db, "tasks", "${taskId}"));`;
       setQueryExecuted(queryText);
       const taskRef = doc(db, "tasks", taskId);
       await deleteDoc(taskRef);
@@ -127,7 +98,7 @@ const MainApp = ({ setShowMainApp }) => {
   const saveEditedTask = async (taskId) => {
     if (editedTaskText.trim()) {
       try {
-        const queryText = `  updateDoc(doc(db, "tasks", "${taskId}"), { text: "${editedTaskText}" });`;
+        const queryText = `updateDoc(doc(db, "tasks", "${taskId}"), { text: "${editedTaskText}" });`;
         setQueryExecuted(queryText);
         const taskRef = doc(db, "tasks", taskId);
         await updateDoc(taskRef, { text: editedTaskText });
@@ -176,7 +147,7 @@ const MainApp = ({ setShowMainApp }) => {
   
 
   const handleSearch = () => {
-    const firebaseQuery = `  query(collection(db, "tasks"), where("text", ">=", "${searchQuery}"), where("text", "<=", "${searchQuery}\\uf8ff"), orderBy("text"))`;
+    const firebaseQuery = `query(collection(db, "tasks"), where("text", "<=", "${searchQuery}"), where("text", ">=", "${searchQuery}\\uf8ff"), orderBy("text"))`;
     setQueryExecuted(firebaseQuery); // Display the Firebase query
     fetchFilteredTasks(searchQuery); // Fetch filtered tasks from Firebase
   };
@@ -312,15 +283,13 @@ const MainApp = ({ setShowMainApp }) => {
             <div className="flex pb-4 text-start h-full">
               <span className="text-green-400">computer:~$</span>
               <div className="flex-1 typing items-center pl-2">
-                {/* Display the typed query */}
-                <div>
-                  {typedQuery} 
-                <span
-                  className={`cursor-blink ${cursorVisible ? "opacity-100" : "opacity-0"}`}
-                >
-                  |
-                </span>
-                </div>
+              <ReactTyped
+                      strings={[queryExecuted]}
+                      typeSpeed={50}
+                      backSpeed={30}
+                      backDelay={1000}
+                      loop={false}
+                  />
               </div>
             </div>
           </div>
