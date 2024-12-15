@@ -4,7 +4,7 @@
 
 The **Firebase Tuto App** is a React-based web application designed to showcase how to use Firebase queries with various actions. It uses **Tailwind CSS** for styling and **Firebase** for the backend, allowing users to interact with the database and see the corresponding executed query displayed on the interface.
 
-![Demo Image](https://github.com/your-username/firebase-tuto/blob/main/src/assets/demo.png)
+![Demo Image](https://github.com/Abdelmalek-Djemaa/Firebase_Tuto_app/blob/main/src/assets/demo.png)
 
 ---
 
