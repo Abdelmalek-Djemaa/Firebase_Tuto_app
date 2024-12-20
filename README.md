@@ -64,9 +64,9 @@ You can also view the live demo here:
 
 For any questions or inquiries, please reach out to:
 
-- **Your Name**
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
-- **LinkedIn**: [Your LinkedIn Profile](https://www.linkedin.com/in/your-profile)
+- **Abdelmalek Djemaa**  
+- **Email:** [a_djemaa@estin.dz](mailto:a_djemaa@estin.dz)  
+- **LinkedIn:** [Abdelmalek Djemaa](https://www.linkedin.com/in/abdelmalek-djemaa-673864317)
 
 ---
 
